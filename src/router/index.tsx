@@ -3,6 +3,10 @@ import LoginPage from '../auth/login';
 import HomePage from '../components/home';
 import RegisterPage from "../auth/register";
 import App from "../App";
+import ExpenseChatUI from "../components/chatUi";
+import ProfileDropdown from "../components/profile";
+import ExpenseList from "../components/expenseList";
+
 
 export const router = createBrowserRouter([
     {
@@ -14,17 +18,29 @@ export const router = createBrowserRouter([
                 element: <HomePage />,
             },
             {
-                path: "auth",
-                children: [
-                    {
-                        path: "login",
-                        element: <LoginPage />,
-                    },
-                    {
-                        path: "register",
-                        element: <RegisterPage />,
-                    }
-                ],
+                path: "chatUi",
+                element: <ExpenseChatUI />,
+            },
+            {
+                path: "profile",
+                element: <ProfileDropdown />
+            },
+            {
+                path: "expenseList",
+                element: <ExpenseList />
+            }
+        ],
+    },
+    {
+        path: "auth",
+        children: [
+            {
+                path: "login",
+                element: <LoginPage />,
+            },
+            {
+                path: "register",
+                element: <RegisterPage />,
             },
         ],
     },

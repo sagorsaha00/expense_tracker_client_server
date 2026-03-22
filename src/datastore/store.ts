@@ -6,6 +6,14 @@ export interface User extends Document {
     lastname?: string;
     email: string;
 }
+export interface expense extends Document {
+    _id: string;
+    amount: string;
+    title: string;
+    date: string;
+    
+
+}
 export interface Token {
     accessToken: string
     refreshToken: string
@@ -13,6 +21,7 @@ export interface Token {
 interface State {
     user: null | User
     token: null | Token
+    expense: null | expense
     setUser: (user: User) => void
     logout: () => void
 }
@@ -23,6 +32,8 @@ export const useAuthStore = create<State>()(
             (set) => ({
                 user: null,
                 token: null,
+                expense: null,
+                setexpense: (expense: expense) => set({ expense }),
                 setUser: (user) => set({ user }),
                 setToken: (token: Token) => set({ token }),
                 logout: () => set({ user: null, token: null }),

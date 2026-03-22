@@ -1,24 +1,14 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
-
 import { useAuthStore } from "../datastore/store";
 import type { expense as ExpenseType } from "../datastore/store";
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "./ui/chart";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
 
-import {
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-    type ChartConfig,
-} from "@/components/ui/chart";
+
+
 
 const chartConfig = {
     amount: {

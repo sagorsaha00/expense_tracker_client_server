@@ -23,12 +23,12 @@ export function NavBar() {
                 className="flex items-center gap-3 cursor-pointer group"
             >
                 <div className="w-9 h-9 rounded-2xl bg-blue-500 flex items-center justify-center text-white text-sm font-bold shadow-sm group-hover:scale-105 transition">
-                    E
+                    W
                 </div>
 
                 <div>
                     <p className="text-sm font-semibold text-gray-800 leading-none">
-                        ExpenseTracker
+                        alletTrack
                     </p>
                     <p className="text-[11px] text-gray-400 hidden sm:block">
                         Track your money

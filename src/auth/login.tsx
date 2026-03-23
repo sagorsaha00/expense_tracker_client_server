@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useFormik } from "formik";
+import axios from "axios";
 import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import { GoogleIcon } from "../icon";
@@ -9,12 +10,12 @@ import { useAuthStore } from "../datastore/store";
 
 
 const loginUser = async (data: { email: string; password: string }) => {
-    await new Promise((r) => setTimeout(r, 1000));
-    if (data.email === "test@example.com" && data.password === "password123") {
-        return { name: "John" };
+    try {
+        const res = await axios.post("http://localhost:3001/auth/login", data);
+        return res.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || "Invalid email or password");
     }
-
-    throw new Error("Invalid email or password");
 };
 
 
@@ -24,7 +25,7 @@ const schema = Yup.object({
     password: Yup.string().min(6, "Min 6 characters").required("Password required"),
 });
 
-/* ───── Input Component ───── */
+
 function Input({
     label,
     error,
@@ -58,15 +59,32 @@ function Input({
 
 
 export default function LoginPage() {
-   
+
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
-    const handleLogin = () => {
+    const mutation = useMutation({
+        mutationFn: loginUser,
+        onSuccess: (data) => {
+            const user = data.userData
+            const token = data.token
+            useAuthStore.getState().setAuth(user, token);
+            navigate("/");
+        },
+        onError: (err: Error) => {
+            setMessage(err.message);
+        },
+    });
 
-        navigate("/auth/register");
-    };
+
+    const formik = useFormik({
+        initialValues: { email: "", password: "" },
+        validationSchema: schema,
+        onSubmit: (values) => {
+            setMessage("");
+            mutation.mutate(values);
+        },
+    });
     const handleLoginByGoogle = () => {
-        // Open in popup instead of redirecting
         const popup = window.open(
             'http://localhost:3001/auth/google',
             'Google Login',
@@ -78,32 +96,16 @@ export default function LoginPage() {
             const { userData, token } = event.data
             console.log(userData, token)
             if (userData && token) {
-                const localstorge = localStorage.getItem('accessToken')
-                console.log('localstorge', localstorge)
-                useAuthStore.setState({ user: userData, })
-                useAuthStore.setState({ token: token, })
-                popup?.close()
-
-
+                useAuthStore.getState().setAuth(userData, token);
+                popup?.close();
             }
 
             navigate('/');
         })
     }
-    const mutation = useMutation({
-        mutationFn: loginUser,
-        onSuccess: (data) => setMessage(`Welcome ${data.name}`),
-        onError: (err: Error) => setMessage(err.message),
-    });
 
-    const formik = useFormik({
-        initialValues: { email: "", password: "" },
-        validationSchema: schema,
-        onSubmit: (values) => {
-            setMessage("");
-            mutation.mutate(values);
-        },
-    });
+
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
@@ -132,9 +134,21 @@ export default function LoginPage() {
                         onBlur={formik.handleBlur}
                         error={formik.errors.email}
                         touched={formik.touched.email}
+
                     />
 
+                    <Input
+                        label="Password"
+                        name="password"
+                        type="password"
+                        placeholder="Enter passWord"
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={formik.errors.password}
+                        touched={formik.touched.password}
 
+                    />
 
 
                     <button
@@ -159,12 +173,12 @@ export default function LoginPage() {
                     Continue with Google
                 </button>
 
-
                 <p className="text-center text-sm text-slate-500 mt-5">
-                    Don't have an account?{" "}
-                    <span onClick={handleLogin} className="text-indigo-600 font-semibold cursor-pointer">
+                    please sign up BY Google account
+                    {/* Don't have an account?{" "} */}
+                    {/* <span onClick={handleLogin} className="text-indigo-600 font-semibold cursor-pointer">
                         Register
-                    </span>
+                    </span> */}
                 </p>
             </div>
         </div>

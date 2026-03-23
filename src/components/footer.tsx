@@ -23,7 +23,7 @@ export default function Footer() {
             <footer className="px-6 py-5 border-t border-gray-100 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-[10px] font-semibold">E</div>
-                    <span onClick={() => navigate('/')} className="text-xs text-gray-400">ExpenseTracker</span>
+                    <span onClick={() => navigate('/')} className="text-xs text-gray-400">WalletTrack</span>
                 </div>
                 <p className="text-xs text-gray-400">Keep your finances simple.</p>
             </footer>

@@ -12,7 +12,7 @@ const HeroSection = () => {
                 Track your money,<br />stay in control
             </h1>
             <p className="text-gray-400 text-base max-w-md mb-3 leading-relaxed">
-                Just chat with AI to log expenses. No forms, no spreadsheets.
+                Just chat with AI to record your expenses. say i spent 500 on food
             </p>
 
             {/* Inline text highlights */}

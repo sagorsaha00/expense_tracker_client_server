@@ -10,7 +10,9 @@ function App() {
   const { user } = useAuthStore();
   return (
     <>
+
       {!user && <Navigate to="/auth/login" />}
+      {user && <Navigate to="/" />}
       <Outlet />
     </>
   );

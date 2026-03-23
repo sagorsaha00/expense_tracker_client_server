@@ -1,8 +1,8 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { useAuthStore } from "../datastore/store";
-import type { expense as ExpenseType } from "../datastore/store";
+import type { ExpenseItem as ExpenseType } from "../datastore/store";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "./ui/chart";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 
@@ -18,11 +18,13 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function ShowExpense() {
+
     const { expense } = useAuthStore();
     const navigate = useNavigate();
 
     const currentMonth = expense?.data?.[0];
     const expenses: ExpenseType[] = currentMonth?.expenses?.slice(0, 6) || [];
+
 
     const chartData = useMemo(() => {
         return expenses.map((item) => ({
@@ -31,6 +33,7 @@ export default function ShowExpense() {
             amount: item.amount,
         }));
     }, [expenses]);
+
 
     return (
         <section className="px-4 sm:px-6 pb-16">

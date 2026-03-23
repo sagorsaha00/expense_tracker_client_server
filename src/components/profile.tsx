@@ -2,11 +2,12 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogOut, Mail, CalendarDays, BadgeCheck, User } from "lucide-react";
 import { useAuthStore } from "../datastore/store";
+import SetPasswordForm from "./sePassword";
 
 export default function ProfilePage() {
     const navigate = useNavigate();
     const { user } = useAuthStore();
-
+     
     const fullName = user?.name || "Unknown User";
     const email = user?.email || "No email";
     const picture = user?.picture || "";
@@ -131,7 +132,7 @@ export default function ProfilePage() {
                         </div>
                     </div>
                 </div>
-
+                <SetPasswordForm   />
                 {/* Logout */}
                 <button
                     onClick={handleLogout}

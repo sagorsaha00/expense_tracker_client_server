@@ -11,12 +11,28 @@ export interface User {
     createdAt?: string;
 }
 
+
 export interface ExpenseItem {
     _id: string;
     amount: string;
     title: string;
     date: string;
 }
+
+
+export interface MonthExpense {
+    _id: string;
+    month: string;
+    expenses: ExpenseItem[];
+}
+
+
+export interface ExpenseResponse {
+    data: MonthExpense[];
+}
+
+
+
 
 export interface Token {
     accessToken: string;

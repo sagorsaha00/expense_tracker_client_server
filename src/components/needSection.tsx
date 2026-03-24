@@ -1,5 +1,4 @@
 import { ArrowRight, BarChart2, Calendar, MessageCircle } from "lucide-react";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function NeedSection() {

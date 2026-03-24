@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { MessageCircle } from "lucide-react";
 import ChatMessage from "./chatmessage";
 import { ChatInput } from "./input";

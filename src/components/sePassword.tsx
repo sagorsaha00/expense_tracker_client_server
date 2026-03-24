@@ -2,26 +2,24 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useAuthStore } from "../datastore/store";
 import api from "../lib/refreshTokenCall";
 
 const setPassword = async (data: { userId: string; password: string }) => {
-    console.log("data", data)
     const res = await api.post("http://localhost:3001/auth/setpassword", data);
     return res.data;
 };
 
 const SetPasswordForm = () => {
     const { user } = useAuthStore();
-    const userId = user!._id
+    const userId = user!._id as string;
     const mutation = useMutation({
         mutationFn: setPassword,
         onSuccess: () => {
             alert("Password set successfully!");
         },
         onError: (error: Error) => {
-            alert(error.response?.data?.message || "Something went wrong");
+            alert(error.message || "Something went wrong");
         },
     });
 

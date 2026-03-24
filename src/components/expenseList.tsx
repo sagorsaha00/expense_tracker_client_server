@@ -31,7 +31,7 @@ function LoadingSpinner() {
                 ))}
             </div>
 
-            
+
             <div className="max-w-3xl mx-auto space-y-3">
                 {[1, 2, 3, 4, 5].map(i => (
                     <div
@@ -52,7 +52,7 @@ function LoadingSpinner() {
 export default function ExpenseList() {
     const { user, expense } = useAuthStore();
     console.log("expense", expense)
-    const userId = user!.id
+    const userId = user!.id as string
     const fetchExpenses = async (userId: string, groupBy: string) => {
         const res = await fetch(`http://localhost:3001/auth/grouped/${userId}?groupBy=${groupBy}`);
         const data = await res.json();

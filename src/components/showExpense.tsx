@@ -1,8 +1,8 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { useAuthStore } from "../datastore/store";
-import type { ExpenseItem as ExpenseType } from "../datastore/store";
+import type { ExpenseItem, MonthExpense, ExpenseResponse } from "../datastore/store";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "./ui/chart";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 
@@ -22,8 +22,11 @@ export default function ShowExpense() {
     const { expense } = useAuthStore();
     const navigate = useNavigate();
 
-    const currentMonth = expense?.data?.[0];
-    const expenses: ExpenseType[] = currentMonth?.expenses?.slice(0, 6) || [];
+
+    const expensee = expense as unknown as ExpenseResponse;
+
+    const currentMonth: MonthExpense | null = expensee?.data?.[0] ?? null;
+    const expenses: ExpenseItem[] = currentMonth?.expenses?.slice(0, 6) || [];
 
 
     const chartData = useMemo(() => {

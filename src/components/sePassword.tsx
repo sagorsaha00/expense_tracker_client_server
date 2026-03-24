@@ -6,7 +6,7 @@ import { useAuthStore } from "../datastore/store";
 import api from "../lib/refreshTokenCall";
 
 const setPassword = async (data: { userId: string; password: string }) => {
-    const res = await api.post("http://localhost:3001/auth/setpassword", data);
+    const res = await api.post("https://backend-of-expense-and-calenderevent-ai-2.onrender.com/auth/setpassword", data);
     return res.data;
 };
 

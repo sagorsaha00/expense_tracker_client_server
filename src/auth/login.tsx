@@ -11,7 +11,7 @@ import { useAuthStore } from "../datastore/store";
 
 const loginUser = async (data: { email: string; password: string }) => {
     try {
-        const res = await axios.post("https://backend-of-expense-and-calender-eve-phi.vercel.app/auth/login", data);
+        const res = await axios.post("https://backend-of-expense-and-calenderevent-ai-2.onrender.com/auth/login", data);
         return res.data;
     } catch (error: any) {
         throw new Error(error.response?.data?.message || "Invalid email or password");

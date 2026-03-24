@@ -54,7 +54,7 @@ export default function ExpenseList() {
     console.log("expense", expense)
     const userId = user!.id as string
     const fetchExpenses = async (userId: string, groupBy: string) => {
-        const res = await fetch(`http://localhost:3001/auth/grouped/${userId}?groupBy=${groupBy}`);
+        const res = await fetch(`https://backend-of-expense-and-calenderevent-ai-2.onrender.com/auth/grouped/${userId}?groupBy=${groupBy}`);
         const data = await res.json();
         useAuthStore.setState({ expense: data })
         return data;

@@ -4,10 +4,11 @@ import * as Yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useAuthStore } from "../datastore/store";
+import api from "../lib/refreshTokenCall";
 
 const setPassword = async (data: { userId: string; password: string }) => {
     console.log("data", data)
-    const res = await axios.post("http://localhost:3001/auth/setpassword", data);
+    const res = await api.post("http://localhost:3001/auth/setpassword", data);
     return res.data;
 };
 
@@ -43,7 +44,7 @@ const SetPasswordForm = () => {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="space-y-4">
+        <form onSubmit={formik.handleSubmit} className="space-y-4 mt-1 shadow-sm">
             <div>
                 <input
                     type="password"

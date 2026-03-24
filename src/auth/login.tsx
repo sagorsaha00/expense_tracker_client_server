@@ -11,7 +11,7 @@ import { useAuthStore } from "../datastore/store";
 
 const loginUser = async (data: { email: string; password: string }) => {
     try {
-        const res = await axios.post("http://localhost:3001/auth/login", data);
+        const res = await axios.post("https://backend-of-expense-and-calender-eve-phi.vercel.app/auth/login", data);
         return res.data;
     } catch (error: any) {
         throw new Error(error.response?.data?.message || "Invalid email or password");
@@ -86,12 +86,12 @@ export default function LoginPage() {
     });
     const handleLoginByGoogle = () => {
         const popup = window.open(
-            'http://localhost:3001/auth/google',
+            'https://backend-of-expense-and-calenderevent-ai-2.onrender.com/auth/google',
             'Google Login',
             'width=500,height=600,left=300,top=100'
         )
         window.addEventListener('message', (event: MessageEvent) => {
-            if (event.origin !== 'http://localhost:3001') return
+            if (event.origin !== 'https://backend-of-expense-and-calenderevent-ai-2.onrender.com') return
             console.log("event", event)
             const { userData, token } = event.data
             console.log(userData, token)

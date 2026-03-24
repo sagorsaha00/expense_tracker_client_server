@@ -3,6 +3,7 @@ import { NavBar } from "./navBar";
 import HeroSection from "./heroSection";
 import Footer from "./footer";
 import HowWork from "./howWork";
+import Test from "./Test";
 
 export default function HomePage() {
 
@@ -16,7 +17,7 @@ export default function HomePage() {
             <HeroSection />
             <ShowExpense />
 
-
+            <Test></Test>
 
             <HowWork />
 

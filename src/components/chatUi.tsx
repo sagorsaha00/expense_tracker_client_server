@@ -19,7 +19,7 @@ export default function ExpenseChatUI() {
     const bottomRef = useRef<HTMLDivElement>(null);
     async function sendMessage(message: string) {
         console.log("message", message)
-        await fetchEventSource("http://localhost:3001/chat/stream", {
+        await fetchEventSource("https://vercel.com/sagorsaha00s-projects/project-shkaa/chat/stream", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ userId, message }),

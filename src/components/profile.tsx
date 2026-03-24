@@ -7,7 +7,7 @@ import SetPasswordForm from "./sePassword";
 export default function ProfilePage() {
     const navigate = useNavigate();
     const { user } = useAuthStore();
-     
+
     const fullName = user?.name || "Unknown User";
     const email = user?.email || "No email";
     const picture = user?.picture || "";
@@ -30,9 +30,7 @@ export default function ProfilePage() {
     }, [fullName]);
     const handleLogout = () => {
         useAuthStore.getState().logout();
-        if (!user) {
-            navigate("/auth/login");
-        }
+        navigate("/auth/login");
 
     }
 
@@ -132,7 +130,7 @@ export default function ProfilePage() {
                         </div>
                     </div>
                 </div>
-                <SetPasswordForm   />
+                <SetPasswordForm />
                 {/* Logout */}
                 <button
                     onClick={handleLogout}

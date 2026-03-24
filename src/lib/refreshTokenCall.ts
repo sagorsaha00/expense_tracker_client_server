@@ -1,52 +1,58 @@
 import axios from "axios";
 import { useAuthStore } from "../datastore/store";
 
-const BACKENDURL = "http://localhost:3001";
+const BACKENDURL = import.meta.env.VITE_BACKEND_URL || "https://backend-of-expense-and-calenderevent-ai-2.onrender.com";
 
 const api = axios.create({
     baseURL: BACKENDURL,
 });
 
-api.interceptors.request.use(
-    (config) => {
-        const accessToken = useAuthStore.getState().token?.accessToken;
+// Request interceptor
+api.interceptors.request.use((config) => {
+    const accessToken = useAuthStore.getState().token?.accessToken;
 
-        if (accessToken) {
-            config.headers.Authorization = `Bearer ${accessToken}`;
-        }
+    if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+    }
 
-        return config;
-    },
-    (error) => Promise.reject(error)
-);
+    return config;
+});
 
+// Response interceptor
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
 
+        if (!originalRequest) {
+            return Promise.reject(error);
+        }
+
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
 
             try {
-                const currentToken = useAuthStore.getState().token;
+                const refreshToken = useAuthStore.getState().token?.refreshToken;
 
-                if (!currentToken?.refreshToken) {
-                    throw new Error("No refresh token found");
+                if (!refreshToken) {
+                    useAuthStore.getState().logout();
+                    window.location.href = "/auth/login";
+                    return Promise.reject(error);
                 }
 
                 const res = await axios.post(`${BACKENDURL}/refreshToken`, {
-                    refreshToken: currentToken.refreshToken,
+                    refreshToken,
                 });
 
                 const newTokens = res.data?.tokens;
 
-                if (!newTokens?.accessToken || !newTokens?.refreshToken) {
-                    throw new Error("Invalid refresh response");
+                if (!newTokens?.accessToken) {
+                    throw new Error("New access token not found");
                 }
 
                 useAuthStore.getState().setToken(newTokens);
 
+                originalRequest.headers = originalRequest.headers || {};
                 originalRequest.headers.Authorization = `Bearer ${newTokens.accessToken}`;
 
                 return api(originalRequest);

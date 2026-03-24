@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 export interface User {
-    _id: string;
-    id: string;
+    _id?: string;
+    id?: string;
     name?: string;
     email?: string;
     picture?: string;

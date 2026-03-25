@@ -1,27 +1,33 @@
-import axios from "axios";
+import axios, { type InternalAxiosRequestConfig } from "axios";
 import { useAuthStore } from "../datastore/store";
 
-const BACKENDURL = import.meta.env.VITE_BACKEND_URL || "https://backend-of-expense-and-calenderevent-ai-2.onrender.com";
+const BACKENDURL =
+    import.meta.env.VITE_BACKEND_URL ||
+    "https://backend-of-expense-and-calenderevent-ai-2.onrender.com";
+
+// _retry flag এর জন্য type extend করো
+interface RetryConfig extends InternalAxiosRequestConfig {
+    _retry?: boolean;
+}
 
 const api = axios.create({
     baseURL: BACKENDURL,
 });
 
-// Request interceptor
+// ✅ Request interceptor — একদম ঠিক আছে
 api.interceptors.request.use((config) => {
     const accessToken = useAuthStore.getState().token?.accessToken;
-
     if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
     }
-
     return config;
 });
 
+// ✅ Response interceptor — fixed version
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
-        const originalRequest = error.config;
+        const originalRequest = error.config as RetryConfig;
 
         if (!originalRequest) {
             return Promise.reject(error);
@@ -39,9 +45,17 @@ api.interceptors.response.use(
                     return Promise.reject(error);
                 }
 
-                const res = await axios.post(`${BACKENDURL}/token/refreshToken`, {
-                    refreshToken,
-                });
+                // ✅ আলাদা axios instance দিয়ে call করো
+                // (api instance use করলে infinite loop হবে!)
+                const res = await axios.post(
+                    `${BACKENDURL}/token/refreshToken`,
+                    { refreshToken },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
 
                 const newTokens = res.data?.tokens;
 
@@ -49,12 +63,18 @@ api.interceptors.response.use(
                     throw new Error("New access token not found");
                 }
 
+                // ✅ Store update করো
                 useAuthStore.getState().setToken(newTokens);
 
-                originalRequest.headers = originalRequest.headers || {};
-                originalRequest.headers.Authorization = `Bearer ${newTokens.accessToken}`;
+                // ✅ সঠিকভাবে header set করো
+                originalRequest.headers.set(
+                    "Authorization",
+                    `Bearer ${newTokens.accessToken}`
+                );
 
+                // ✅ Original request retry করো
                 return api(originalRequest);
+
             } catch (refreshError) {
                 useAuthStore.getState().logout();
                 window.location.href = "/auth/login";

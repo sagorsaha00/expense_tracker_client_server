@@ -39,7 +39,7 @@ api.interceptors.response.use(
                     return Promise.reject(error);
                 }
 
-                const res = await axios.post(`${BACKENDURL}/refreshToken`, {
+                const res = await axios.post(`${BACKENDURL}/token/refreshToken`, {
                     refreshToken,
                 });
 

@@ -2,16 +2,18 @@ import { createBrowserRouter } from "react-router-dom";
 import LoginPage from '../auth/login';
 import HomePage from '../components/home';
 import RegisterPage from "../auth/register";
-import App from "../App";
 import ExpenseChatUI from "../components/chatUi";
 import ProfileDropdown from "../components/profile";
 import ExpenseList from "../components/expenseList";
+import { RootLayout } from "../layouts/RootLayout";
+import AuthLayout from "./AuthLayout";
+
 
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />,
+        element: <RootLayout />,
         children: [
             {
                 index: true,
@@ -29,10 +31,12 @@ export const router = createBrowserRouter([
                 path: "expenseList",
                 element: <ExpenseList />
             }
-        ],
+        ]
     },
+
     {
         path: "auth",
+        element: <AuthLayout />,
         children: [
             {
                 path: "login",

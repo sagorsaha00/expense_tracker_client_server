@@ -16,11 +16,8 @@ export default function HomePage() {
             <NavBar />
             <HeroSection />
             <ShowExpense />
-
-            <Test></Test>
-
+            {/* <Test></Test> */}
             <HowWork />
-
             <Footer />
 
         </div>

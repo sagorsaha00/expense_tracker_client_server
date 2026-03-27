@@ -45,8 +45,6 @@ api.interceptors.response.use(
                     return Promise.reject(error);
                 }
 
-                // ✅ আলাদা axios instance দিয়ে call করো
-                // (api instance use করলে infinite loop হবে!)
                 const res = await axios.post(
                     `${BACKENDURL}/token/refreshToken`,
                     { refreshToken },
